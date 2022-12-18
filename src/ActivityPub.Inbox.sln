@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.CakeLib", "..\SethCS\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityPub.Inbox.Common", "ActivityPub.Inbox.Common\ActivityPub.Inbox.Common.csproj", "{DC514E0E-097C-4207-90CB-E019C42B1DED}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KristofferStrube.ActivityStreams", "..\ActivityStreams\src\KristofferStrube.ActivityStreams\KristofferStrube.ActivityStreams.csproj", "{B116963D-ECB3-445A-AA97-E0B287C4D965}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B116963D-ECB3-445A-AA97-E0B287C4D965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B116963D-ECB3-445A-AA97-E0B287C4D965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B116963D-ECB3-445A-AA97-E0B287C4D965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B116963D-ECB3-445A-AA97-E0B287C4D965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

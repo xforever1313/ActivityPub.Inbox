@@ -1,3 +1,6 @@
 [submodule "SethCS"]
 	path = SethCS
 	url = https://github.com/xforever1313/sethcs.git
+[submodule "ActivityStreams"]
+	path = ActivityStreams
+	url = https://github.com/xforever1313/ActivityStreams.git
