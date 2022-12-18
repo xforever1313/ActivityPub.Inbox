@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOps", "DevOps\DevOps.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.CakeLib", "..\SethCS\Seth.CakeLib\Seth.CakeLib.csproj", "{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityPub.Inbox.Common", "ActivityPub.Inbox.Common\ActivityPub.Inbox.Common.csproj", "{DC514E0E-097C-4207-90CB-E019C42B1DED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC514E0E-097C-4207-90CB-E019C42B1DED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
