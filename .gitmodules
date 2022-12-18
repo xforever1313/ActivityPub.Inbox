@@ -4,3 +4,6 @@
 [submodule "ActivityStreams"]
 	path = ActivityStreams
 	url = https://github.com/xforever1313/ActivityStreams.git
+[submodule "ActivityPubSchema"]
+	path = ActivityPubSchema
+	url = https://github.com/redaktor/ActivityPubSchema.git
