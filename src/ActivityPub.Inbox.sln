@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivityPub.Inbox.Web", "ActivityPub.Inbox.Web\ActivityPub.Inbox.Web.csproj", "{EAC32D36-24F8-445E-9B55-173579E87794}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSethCS", "..\SethCS\LibSethCS\LibSethCS.csproj", "{21617EB2-FB59-487D-AF9A-7AA5688EC5B0}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SethCS", "..\SethCS\SethCS\SethCS.shproj", "{52089274-B9A2-4A47-A221-C321DEE1CE7F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.Analyzer", "..\SethCS\Seth.Analyzer\Seth.Analyzer.csproj", "{C73B6FC7-65D4-43CE-A558-C61F875F4822}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOps", "DevOps\DevOps.csproj", "{522CA218-8DD1-40EA-B983-B0253B1FE12E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.CakeLib", "..\SethCS\Seth.CakeLib\Seth.CakeLib.csproj", "{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAC32D36-24F8-445E-9B55-173579E87794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC32D36-24F8-445E-9B55-173579E87794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC32D36-24F8-445E-9B55-173579E87794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC32D36-24F8-445E-9B55-173579E87794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21617EB2-FB59-487D-AF9A-7AA5688EC5B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21617EB2-FB59-487D-AF9A-7AA5688EC5B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21617EB2-FB59-487D-AF9A-7AA5688EC5B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21617EB2-FB59-487D-AF9A-7AA5688EC5B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73B6FC7-65D4-43CE-A558-C61F875F4822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73B6FC7-65D4-43CE-A558-C61F875F4822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73B6FC7-65D4-43CE-A558-C61F875F4822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73B6FC7-65D4-43CE-A558-C61F875F4822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{522CA218-8DD1-40EA-B983-B0253B1FE12E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{522CA218-8DD1-40EA-B983-B0253B1FE12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{522CA218-8DD1-40EA-B983-B0253B1FE12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{522CA218-8DD1-40EA-B983-B0253B1FE12E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB0A94DD-C902-4FA5-BD0F-E1059F021CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A40300B7-AAC6-4FE7-A88F-3B3814DFFAF2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SethCS\SethCS\SethCS.projitems*{21617eb2-fb59-487d-af9a-7aa5688ec5b0}*SharedItemsImports = 5
+		..\SethCS\SethCS\SethCS.projitems*{52089274-b9a2-4a47-a221-c321dee1ce7f}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
