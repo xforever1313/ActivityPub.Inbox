@@ -198,7 +198,7 @@ namespace ActivityPub.Inbox.Web
                     botToken: telegramBotToken,
                     chatId: telegramChatId,
                     dateFormat: "dd.MM.yyyy HH:mm:sszzz",
-                    applicationName: $"{typeof( Program ).Assembly.GetName().Name} v{typeof(Program).Assembly.GetName().Version}",
+                    applicationName: $"{typeof( Program ).Assembly.GetName().Name} {GetVersion()}",
                     failureCallback: onTelegramFailure
                 );
                 logger.WriteTo.Telegram(
@@ -226,7 +226,7 @@ namespace ActivityPub.Inbox.Web
 
         private static void PrintVersion()
         {
-            Console.WriteLine( typeof( Program ).Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version" );
+            Console.WriteLine( GetVersion() );
         }
 
         private static void PrintLicense()
@@ -237,6 +237,11 @@ namespace ActivityPub.Inbox.Web
         private static void PrintCredits()
         {
             Console.WriteLine( "NOT IMPLEMENTED YET!" );
+        }
+
+        private static string GetVersion()
+        {
+            return typeof( Program ).Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
         }
     }
 }
