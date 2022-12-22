@@ -17,9 +17,10 @@
 //
 
 using System.Xml.Linq;
+using ActivityPub.Inbox.Common;
 using SethCS.Exceptions;
 
-namespace ActivityPub.Inbox.Common
+namespace ActivityPub.Inbox.Web
 {
     public record class ActivityPubInboxConfig : IActivityPubInboxConfig
     {
