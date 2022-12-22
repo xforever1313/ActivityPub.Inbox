@@ -23,7 +23,6 @@ using SethCS.Extensions;
 namespace ActivityPub.Inbox.Common
 {
     public record class ActivityPubSiteConfig(
-        Uri SiteUrl,
         FileInfo PrivateKeyFile,
         FileInfo PublicKeyFile,
         Uri ProfileUrl,
@@ -38,7 +37,6 @@ namespace ActivityPub.Inbox.Common
             }
 
             return
-                this.SiteUrl.Equals( other.SiteUrl ) &&
                 this.PrivateKeyFile.FullName.Equals( other.PrivateKeyFile.FullName ) &&
                 this.PublicKeyFile.FullName.Equals( other.PublicKeyFile.FullName ) &&
                 this.ProfileUrl.Equals( other.ProfileUrl ) &&
@@ -48,7 +46,6 @@ namespace ActivityPub.Inbox.Common
         public override int GetHashCode()
         {
             return
-                this.SiteUrl.GetHashCode() +
                 this.PrivateKeyFile.FullName.GetHashCode() +
                 this.PublicKeyFile.FullName.GetHashCode() +
                 this.ProfileUrl.GetHashCode() +
@@ -109,7 +106,6 @@ namespace ActivityPub.Inbox.Common
                 );
             }
 
-            Uri? siteUri = null;
             FileInfo? privateKeyFile = null;
             FileInfo? publicKeyFile = null;
             Uri? profileUrl = null;
@@ -139,21 +135,8 @@ namespace ActivityPub.Inbox.Common
                     endPoint = element.Value;
                 }
             }
-            foreach( XAttribute attr in siteElement.Attributes() )
-            {
-                string name = attr.Name.LocalName;
-                if( string.IsNullOrWhiteSpace( name ) )
-                {
-                    continue;
-                }
-                else if( "id".EqualsIgnoreCase( name ) )
-                {
-                    siteUri = new Uri( attr.Value );
-                }
-            }
 
             if(
-                ( siteUri is null ) ||
                 ( privateKeyFile is null ) ||
                 ( publicKeyFile is null ) ||
                 ( profileUrl is null ) ||
@@ -162,7 +145,6 @@ namespace ActivityPub.Inbox.Common
             {
                 var missing = new List<string>();
 
-                if( siteUri is null ) { missing.Add( nameof( siteUri ) ); }
                 if( privateKeyFile is null ) { missing.Add( nameof( privateKeyFile ) ); }
                 if( publicKeyFile is null ) { missing.Add( nameof( publicKeyFile ) ); }
                 if( profileUrl is null ) { missing.Add( nameof( profileUrl ) ); }
@@ -175,7 +157,6 @@ namespace ActivityPub.Inbox.Common
             }
 
             return new ActivityPubSiteConfig(
-                siteUri,
                 privateKeyFile,
                 publicKeyFile,
                 profileUrl,

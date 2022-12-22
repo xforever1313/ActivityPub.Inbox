@@ -49,7 +49,6 @@ namespace ActivityPub.Inbox.Tests
 </Sites>
 ";
             var expected0 = new ActivityPubSiteConfig(
-                SiteUrl: new Uri( "https://www.roclongboarding.info" ),
                 PrivateKeyFile: new FileInfo( "roclongboarding/private.pem" ),
                 PublicKeyFile: new FileInfo( "roclongboarding/public.pem" ),
                 ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
@@ -57,7 +56,6 @@ namespace ActivityPub.Inbox.Tests
             );
 
             var expected1 = new ActivityPubSiteConfig(
-                SiteUrl: new Uri( "https://troop53stories.shendrick.net/" ),
                 PrivateKeyFile: new FileInfo( "troop53stories/private.pem" ),
                 PublicKeyFile: new FileInfo( "troop53stories/public.pem" ),
                 ProfileUrl: new Uri( "https://troop53stories.shendrick.net/activitypub/profile.json" ),
@@ -74,32 +72,6 @@ namespace ActivityPub.Inbox.Tests
             Assert.AreEqual( 2, configs.Count );
             Assert.AreEqual( expected0, configs[0] );
             Assert.AreEqual( expected1, configs[1] );
-        }
-
-        [TestMethod]
-        public void XmlMissingSiteId()
-        {
-            // Setup
-            const string xmlString =
-@"
-<Sites>
-    <Site>
-        <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
-        <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
-        <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
-        <EndPoint>roclongboarding</EndPoint>
-    </Site>
-</Sites>
-";
-
-            // Act
-            XDocument doc = XDocument.Parse( xmlString );
-            ListedValidationException e = Assert.ThrowsException<ListedValidationException>(
-                () => ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc )
-            );
-
-            // Check
-            Assert.AreEqual( 1, e.Errors.Count() );
         }
 
         [TestMethod]
@@ -207,7 +179,6 @@ namespace ActivityPub.Inbox.Tests
         {
             // Setup
             var uut = new ActivityPubSiteConfig(
-                SiteUrl: new Uri( "https://www.roclongboarding.info" ),
                 PrivateKeyFile: new FileInfo( "DoesNotExist.pem" ),
                 // Pretend our assembly is our public key so this part passes.
                 PublicKeyFile: new FileInfo( this.GetType().Assembly.Location ),
@@ -229,7 +200,6 @@ namespace ActivityPub.Inbox.Tests
         {
             // Setup
             var uut = new ActivityPubSiteConfig(
-                SiteUrl: new Uri( "https://www.roclongboarding.info" ),
                 // Pretend our assembly is our private key so this part passes.
                 PrivateKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 PublicKeyFile: new FileInfo( "DoesNotExist.pem" ),
@@ -251,7 +221,6 @@ namespace ActivityPub.Inbox.Tests
         {
             // Setup
             var uut = new ActivityPubSiteConfig(
-                SiteUrl: new Uri( "https://www.roclongboarding.info" ),
                 // Pretend our assembly is our keys so this part passes.
                 PrivateKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 PublicKeyFile: new FileInfo( this.GetType().Assembly.Location ),
