@@ -18,6 +18,8 @@
 
 using ActivityPub.Inbox.Common;
 using dotenv.net;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
 using Serilog;
 using Serilog.Sinks.Telegram;
@@ -140,6 +142,12 @@ namespace ActivityPub.Inbox.Web
                 builder.WebHost.UseUrls( config.Urls );
 
                 WebApplication app = builder.Build();
+                app.UseForwardedHeaders(
+                    new ForwardedHeadersOptions
+                    {
+                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                    }
+                );
 
                 // Configure the HTTP request pipeline.
                 if( !app.Environment.IsDevelopment() )
