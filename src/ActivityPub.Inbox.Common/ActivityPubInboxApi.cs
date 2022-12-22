@@ -42,11 +42,13 @@ namespace ActivityPub.Inbox.Common
 
             this.Config = config;
             this.log = log;
+            this.Inbox = new InboxHandler( this.log );
+            this.Followers = new Followers( this.log );
 
             var siteConfigs = new Dictionary<string, ActivityPubSiteConfig>();
             foreach( ActivityPubSiteConfig siteConfig in config.Sites )
             {
-                siteConfigs[siteConfig.EndPoint] = siteConfig;
+                siteConfigs.Add( siteConfig.EndPoint, siteConfig );
             }
             this.SiteConfigs = new ReadOnlyDictionary<string,ActivityPubSiteConfig>(
                 siteConfigs
@@ -58,6 +60,10 @@ namespace ActivityPub.Inbox.Common
         public IActivityPubInboxConfig Config { get; private set; }
 
         public IReadOnlyDictionary<string, ActivityPubSiteConfig> SiteConfigs { get; private set; }
+
+        public InboxHandler Inbox { get; private set; }
+
+        public Followers Followers { get; private set; }
 
         // ---------------- Functions ----------------
 

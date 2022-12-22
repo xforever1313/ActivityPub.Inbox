@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ActivityStreams\src\KristofferStrube.ActivityStreams\KristofferStrube.ActivityStreams.csproj" />
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
   </ItemGroup>
 
