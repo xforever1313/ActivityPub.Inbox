@@ -20,6 +20,8 @@ namespace ActivityPub.Inbox.Common
 {
     public record class ActivityPubInboxConfig
     {
+        public FileInfo? SiteConfigFile { get; init; } = null;
+
         public string Urls { get; init; } = "http://127.0.0.1:9914";
 
         public FileInfo? LogFile { get; init; } = null;
@@ -46,6 +48,11 @@ namespace ActivityPub.Inbox.Common
             if( NotNull( "ASPNETCORE_URLS", out string urls ) )
             {
                 settings = settings with { Urls = urls };
+            }
+
+            if( NotNull( "APP_SITE_CONFIG_FILE", out string siteConfigFile ) )
+            {
+                settings = settings with { SiteConfigFile = new FileInfo( siteConfigFile ) };
             }
 
             if( NotNull( "APP_LOG_FILE", out string logFile ) )

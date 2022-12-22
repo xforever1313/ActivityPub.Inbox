@@ -11,4 +11,8 @@
     <PackageReference Include="Serilog" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
+  </ItemGroup>
+
 </Project>
