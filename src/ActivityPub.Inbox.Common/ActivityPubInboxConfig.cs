@@ -16,11 +16,16 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using System.Xml.Linq;
+using SethCS.Exceptions;
+
 namespace ActivityPub.Inbox.Common
 {
-    public record class ActivityPubInboxConfig
+    public record class ActivityPubInboxConfig : IActivityPubInboxConfig
     {
-        public FileInfo? SiteConfigFile { get; init; } = null;
+        // ---------------- Properties ----------------
+
+        public IEnumerable<ActivityPubSiteConfig> Sites { get; init; } = new List<ActivityPubSiteConfig>();
 
         public string Urls { get; init; } = "http://127.0.0.1:9914";
 
@@ -29,6 +34,26 @@ namespace ActivityPub.Inbox.Common
         public string? TelegramBotToken { get; init; } = null;
 
         public string? TelegramChatId { get; init; } = null;
+
+        // ---------------- Functions ----------------
+
+        public void Validate()
+        {
+            var errors = new List<string>();
+
+            foreach( ActivityPubSiteConfig siteConfig in this.Sites )
+            {
+                errors.AddRange( siteConfig.TryValidate() );
+            }
+
+            if( errors.Any() )
+            {
+                throw new ListedValidationException(
+                    $"Errors when validating {nameof( ActivityPubInboxConfig )}",
+                    errors
+                );
+            }
+        }
     }
 
     public static class ActivityPubInboxConfigExtensions
@@ -52,7 +77,11 @@ namespace ActivityPub.Inbox.Common
 
             if( NotNull( "APP_SITE_CONFIG_FILE", out string siteConfigFile ) )
             {
-                settings = settings with { SiteConfigFile = new FileInfo( siteConfigFile ) };
+                XDocument doc = XDocument.Load( siteConfigFile );
+                settings = settings with
+                { 
+                    Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc )
+                };
             }
 
             if( NotNull( "APP_LOG_FILE", out string logFile ) )

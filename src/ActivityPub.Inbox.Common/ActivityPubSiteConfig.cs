@@ -55,7 +55,7 @@ namespace ActivityPub.Inbox.Common
                 this.EndPoint.GetHashCode();
         }
 
-        public void Validate()
+        public IEnumerable<string> TryValidate()
         {
             var errors = new List<string>();
 
@@ -73,6 +73,13 @@ namespace ActivityPub.Inbox.Common
             {
                 errors.Add( $"{this.EndPoint} can not be null, empty, or whitespace!" );
             }
+
+            return errors;
+        }
+
+        public void Validate()
+        {
+            IEnumerable<string> errors = TryValidate();
 
             if( errors.Any() )
             {

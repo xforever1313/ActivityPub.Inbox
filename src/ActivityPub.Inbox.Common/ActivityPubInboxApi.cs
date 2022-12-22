@@ -16,6 +16,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using System.Collections.ObjectModel;
 using Serilog;
 
 namespace ActivityPub.Inbox.Common
@@ -26,22 +27,49 @@ namespace ActivityPub.Inbox.Common
 
         private readonly ILogger log;
 
+        private bool isDisposed;
+
         // ---------------- Constructor ----------------
 
-        public ActivityPubInboxApi( ActivityPubInboxConfig config, ILogger log )
+        public ActivityPubInboxApi(
+            IActivityPubInboxConfig config,
+            ILogger log
+        )
         {
+            this.isDisposed = false;
+
+            config.Validate();
+
             this.Config = config;
             this.log = log;
+
+            var siteConfigs = new Dictionary<string, ActivityPubSiteConfig>();
+            foreach( ActivityPubSiteConfig siteConfig in config.Sites )
+            {
+                siteConfigs[siteConfig.EndPoint] = siteConfig;
+            }
+            this.SiteConfigs = new ReadOnlyDictionary<string,ActivityPubSiteConfig>(
+                siteConfigs
+            );
         }
 
         // ---------------- Properties ----------------
 
-        public ActivityPubInboxConfig Config { get; private set; }
+        public IActivityPubInboxConfig Config { get; private set; }
+
+        public IReadOnlyDictionary<string, ActivityPubSiteConfig> SiteConfigs { get; private set; }
 
         // ---------------- Functions ----------------
 
         public void Dispose()
         {
+            if( this.isDisposed )
+            {
+                return;
+            }
+
+            GC.SuppressFinalize( this );
+            this.isDisposed = true;
         }
     }
 }
