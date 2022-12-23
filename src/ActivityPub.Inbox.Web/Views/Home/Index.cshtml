@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "About Activitypub Inbox Service";
+    ViewData["Description"] = "ActivityPub Inbox Service";
+    ViewData["keywords"] = "activity,dotnet,inbox,pub,service";
 }
 
 @model HomeModel;
@@ -29,7 +31,17 @@
         <a href="/Home/License/">AGPL-3.0</a>
     </li>
     <li>
-        <a href="/Home/Credits/">View third-party credits</a>
+        <a href="/Home/Credits/">View service's third-party credits</a>
+    </li>
+    <li>
+        <a href="https://activitypub.shendrick.net/about/credits/" target="_blank" rel="noopener noreferrer nofollow">
+            View static websites's third-party credits
+        </a>
+    </li>
+    <li>
+        <a href="https://activitypub.shendrick.net/about/privacy/" target="_blank" rel="noopener noreferrer nofollow">
+            View Privacy Policy
+        </a>
     </li>
     <li>
         <strong>Version: </strong>@Model.Version

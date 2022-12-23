@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="dotenv.net" />
+	<PackageReference Include="Markdig" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" />
     <PackageReference Include="Mono.Options" />
     <PackageReference Include="Serilog" />

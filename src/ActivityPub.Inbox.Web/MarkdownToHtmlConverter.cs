@@ -16,32 +16,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using SethCS.IO;
+using Markdig;
 
-namespace ActivityPub.Inbox.Common
+namespace ActivityPub.Inbox.Web
 {
-    public sealed class Resources
+    public static class MarkdownToHtmlConverter
     {
-        // ---------------- Constructor ----------------
-
-        public Resources()
+        public static string Convert( string markdown )
         {
-        }
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
 
-        // ---------------- Functions ----------------
-
-        public string GetLicense()
-        {
-            return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Common )}.License.md"
-            );
-        }
-
-        public string GetCredits()
-        {
-            return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Common )}.Credits.md"
-            );
+            return Markdown.ToHtml( markdown, pipeline );
         }
     }
 }

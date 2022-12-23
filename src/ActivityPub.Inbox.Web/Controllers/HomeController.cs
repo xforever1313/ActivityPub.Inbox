@@ -48,8 +48,12 @@ namespace ActivityPub.Inbox.Web.Controllers
 
         public IActionResult License()
         {
-            this.Response.ContentType = "text/plain";
-            return Ok( this.api.Resources.GetLicenseTxt() );
+            return View( new HomeModel( this.api ) );
+        }
+
+        public IActionResult Credits()
+        {
+            return View( new HomeModel( this.api ) );
         }
 
         [ResponseCache(

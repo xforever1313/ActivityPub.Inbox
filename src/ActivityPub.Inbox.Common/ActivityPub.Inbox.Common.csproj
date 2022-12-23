@@ -20,7 +20,7 @@
     <EmbeddedResource Include="..\..\Credits.md" Link="Credits.md">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</EmbeddedResource>
-	<EmbeddedResource Include="..\..\LICENSE.txt" Link="LICENSE.txt">
+	<EmbeddedResource Include="..\..\License.md" Link="License.md">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</EmbeddedResource>
   </ItemGroup>

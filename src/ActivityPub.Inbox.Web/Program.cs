@@ -265,12 +265,14 @@ namespace ActivityPub.Inbox.Web
 
         private static void PrintLicense()
         {
-            Console.WriteLine( "NOT IMPLEMENTED YET!" );
+            var resources = new Resources();
+            Console.WriteLine( resources.GetLicense() );
         }
 
         private static void PrintCredits()
         {
-            Console.WriteLine( "NOT IMPLEMENTED YET!" );
+            var resources = new Resources();
+            Console.WriteLine( resources.GetCredits() );
         }
 
         private static string GetVersion()
