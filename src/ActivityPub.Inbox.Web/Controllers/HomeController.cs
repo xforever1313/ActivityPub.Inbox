@@ -17,34 +17,54 @@
 //
 
 using System.Diagnostics;
+using ActivityPub.Inbox.Common;
 using ActivityPub.Inbox.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ActivityPub.Inbox.Web.Controllers
 {
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        // ---------------- Fields ----------------
 
-        public HomeController( ILogger<HomeController> logger )
+        private readonly ActivityPubInboxApi api;
+
+        private readonly Serilog.ILogger log;
+
+        // ---------------- Constructor ----------------
+
+        public HomeController( ActivityPubInboxApi api, Serilog.ILogger log )
         {
-            _logger = logger;
+            this.api = api;
+            this.log = log;
         }
+
+        // ---------------- Functions ----------------
 
         public IActionResult Index()
         {
-            return View();
+            return View( new HomeModel( this.api ) );
         }
 
-        public IActionResult Privacy()
+        public IActionResult License()
         {
-            return View();
+            this.Response.ContentType = "text/plain";
+            return Ok( this.api.Resources.GetLicenseTxt() );
         }
 
-        [ResponseCache( Duration = 0, Location = ResponseCacheLocation.None, NoStore = true )]
+        [ResponseCache(
+            Duration = 0,
+            Location = ResponseCacheLocation.None,
+            NoStore = true
+        )]
         public IActionResult Error()
         {
-            return View( new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } );
+            return View(
+                new ErrorViewModel
+                { 
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                } 
+            );
         }
     }
 }

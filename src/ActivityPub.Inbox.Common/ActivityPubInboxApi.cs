@@ -44,6 +44,8 @@ namespace ActivityPub.Inbox.Common
             this.log = log;
             this.Inbox = new InboxHandler( this.log );
             this.Followers = new Followers( this.log );
+            this.Resources = new Resources();
+            this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             var siteConfigs = new Dictionary<string, ActivityPubSiteConfig>();
             foreach( ActivityPubSiteConfig siteConfig in config.Sites )
@@ -64,6 +66,10 @@ namespace ActivityPub.Inbox.Common
         public InboxHandler Inbox { get; private set; }
 
         public Followers Followers { get; private set; }
+
+        public Resources Resources { get; private set; }
+
+        public string Version { get; private set; }
 
         // ---------------- Functions ----------------
 

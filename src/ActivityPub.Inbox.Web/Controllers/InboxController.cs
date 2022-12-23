@@ -41,13 +41,13 @@ namespace ActivityPub.Inbox.Web.Controllers
 
         // ---------------- Functions ----------------
 
-        [Route( "/{Inbox}" )]
+        [Route( "/Inbox" )]
         public IActionResult Index()
         {
             return BadRequest( "Profile must be specified" );
         }
 
-        [Route( "/{Inbox}/{id}" )]
+        [Route( "/Inbox/id" )]
         public async Task<IActionResult> Index( [FromRoute] string? id )
         {
             if(
