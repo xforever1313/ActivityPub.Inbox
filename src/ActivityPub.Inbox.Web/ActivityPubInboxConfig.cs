@@ -28,8 +28,6 @@ namespace ActivityPub.Inbox.Web
 
         public IEnumerable<ActivityPubSiteConfig> Sites { get; init; } = new List<ActivityPubSiteConfig>();
 
-        public string Urls { get; init; } = "http://127.0.0.1:9914";
-
         public FileInfo? LogFile { get; init; } = null;
 
         public string? TelegramBotToken { get; init; } = null;
@@ -70,11 +68,6 @@ namespace ActivityPub.Inbox.Web
             }
 
             var settings = new ActivityPubInboxConfig();
-
-            if( NotNull( "ASPNETCORE_URLS", out string urls ) )
-            {
-                settings = settings with { Urls = urls };
-            }
 
             if( NotNull( "APP_SITE_CONFIG_FILE", out string siteConfigFile ) )
             {

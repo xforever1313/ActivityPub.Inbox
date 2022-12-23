@@ -18,7 +18,6 @@
 
 using ActivityPub.Inbox.Common;
 using dotenv.net;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Mono.Options;
 using Serilog;
@@ -139,7 +138,6 @@ namespace ActivityPub.Inbox.Web
                 // Add services to the container.
                 builder.Services.AddControllersWithViews();
                 builder.Host.UseSerilog( log );
-                builder.WebHost.UseUrls( config.Urls );
 
                 WebApplication app = builder.Build();
                 app.UseForwardedHeaders(
@@ -153,15 +151,10 @@ namespace ActivityPub.Inbox.Web
                 if( !app.Environment.IsDevelopment() )
                 {
                     app.UseExceptionHandler( "/Home/Error" );
-                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                    app.UseHsts();
                 }
 
-                app.UseHttpsRedirection();
                 app.UseStaticFiles();
-
                 app.UseRouting();
-
                 app.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}" );
