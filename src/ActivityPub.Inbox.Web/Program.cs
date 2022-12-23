@@ -140,12 +140,45 @@ namespace ActivityPub.Inbox.Web
                 builder.Host.UseSerilog( log );
 
                 WebApplication app = builder.Build();
+                if( string.IsNullOrWhiteSpace( config.BasePath ) == false )
+                {
+                    app.Use(
+                        ( HttpContext context, RequestDelegate next ) =>
+                        {
+                            context.Request.PathBase = config.BasePath;
+                            return next( context );
+                        }
+                    );
+                }
+
                 app.UseForwardedHeaders(
                     new ForwardedHeadersOptions
                     {
-                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
                     }
                 );
+
+                if( config.AllowPorts == false )
+                {
+                    app.Use(
+                        ( HttpContext context, RequestDelegate next ) =>
+                        {
+                            int? port = context.Request.Host.Port;
+                            if( port is not null )
+                            {
+                                // Kill the connection,
+                                // and stop all processing.
+                                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                                context.Connection.RequestClose();
+                                return Task.CompletedTask;
+                            }
+
+                            return next( context );
+                        }
+                    );
+                }
+
+                app.UseHostFiltering();
 
                 // Configure the HTTP request pipeline.
                 if( !app.Environment.IsDevelopment() )
