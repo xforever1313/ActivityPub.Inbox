@@ -36,17 +36,17 @@ namespace ActivityPub.Inbox.Common
 
         // ---------------- Functions ----------------
 
-        public void HandleNewActivity( Activity json )
+        public void HandleNewActivity( string siteId, Activity json )
         {
             throw new NotImplementedException();
         }
 
-        public Task AsyncHandleNewActivity( Activity json )
+        public Task AsyncHandleNewActivity( string siteId, Activity json )
         {
-            return Task.Run( () => HandleNewActivity( json ) );
+            return Task.Run( () => HandleNewActivity( siteId, json ) );
         }
 
-        public OrderedCollection GetActivities()
+        public OrderedCollection GetActivities( string siteId )
         {
             return new OrderedCollection
             {
@@ -54,9 +54,9 @@ namespace ActivityPub.Inbox.Common
             };
         }
 
-        public Task<OrderedCollection> AsyncGetActivities()
+        public Task<OrderedCollection> AsyncGetActivities( string siteId )
         {
-            return Task.Run( () => GetActivities() );
+            return Task.Run( () => GetActivities( siteId ) );
         }
     }
 }

@@ -23,17 +23,17 @@ using SethCS.Extensions;
 
 namespace ActivityPub.Inbox.Web.Controllers
 {
-    public class InboxController : Controller
+    public sealed class InboxController : Controller
     {
         // ---------------- Fields ----------------
 
-        private readonly ILogger log;
+        private readonly Serilog.ILogger log;
 
         private readonly ActivityPubInboxApi api;
 
         // ---------------- Constructor ----------------
 
-        public InboxController( ActivityPubInboxApi api, ILogger log )
+        public InboxController( ActivityPubInboxApi api, Serilog.ILogger log )
         {
             this.log = log;
             this.api = api;
@@ -41,22 +41,19 @@ namespace ActivityPub.Inbox.Web.Controllers
 
         // ---------------- Functions ----------------
 
+        [Route( "/{Inbox}" )]
         public IActionResult Index()
         {
-            return View();
+            return BadRequest( "Profile must be specified" );
         }
 
-        public async Task<IActionResult> Index( string profileId )
+        [Route( "/{Inbox}/{id}" )]
+        public async Task<IActionResult> Index( [FromRoute] string? id )
         {
-            using( StreamReader reader = new StreamReader( this.Request.Body ) )
-            {
-                string body = await reader.ReadToEndAsync();
-                this.log.LogInformation( body );
-
-                return NotFound( "Not implemented" );
-            }
-
-            if( this.api.SiteConfigs.ContainsKey( profileId ) == false )
+            if(
+                ( id is null ) ||
+                ( this.api.SiteConfigs.ContainsKey( id ) == false )
+            )
             {
                 return NotFound( "Profile not found" );
             }
@@ -69,13 +66,13 @@ namespace ActivityPub.Inbox.Web.Controllers
                     return BadRequest( "Body was null" );
                 }
 
-                await this.api.Inbox.AsyncHandleNewActivity( act );
+                await this.api.Inbox.AsyncHandleNewActivity( id, act );
                 return Accepted();
             }
             else
             {
                 this.HttpContext.Response.ContentType = "application/activity+json";
-                OrderedCollection result = await this.api.Inbox.AsyncGetActivities();
+                OrderedCollection result = await this.api.Inbox.AsyncGetActivities( id );
                 return new JsonResult( result );
             }
         }
