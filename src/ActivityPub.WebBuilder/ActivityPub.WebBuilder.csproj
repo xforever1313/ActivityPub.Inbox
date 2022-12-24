@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="dotenv.net" />
+	<PackageReference Include="Markdig" />
+	<PackageReference Include="Microsoft.AspNetCore.HttpOverrides" />
+	<PackageReference Include="Mono.Options" />
+	<PackageReference Include="Serilog" />
+	<PackageReference Include="Serilog.AspNetCore" />
+	<PackageReference Include="Serilog.Sinks.Console" />
+	<PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Sinks.Telegram.Alternative" />
+  </ItemGroup>
+
+</Project>

@@ -17,267 +17,86 @@
 //
 
 using ActivityPub.Inbox.Common;
-using dotenv.net;
-using Microsoft.AspNetCore.HttpOverrides;
-using Mono.Options;
-using Serilog;
-using Serilog.Sinks.Telegram;
+using ActivityPub.WebBuilder;
 
 namespace ActivityPub.Inbox.Web
 {
     public class Program
     {
-        // ---------------- Fields ----------------
-
-        private static Serilog.ILogger? log = null;
-
         // ---------------- Functions ----------------
 
         public static int Main( string[] args )
         {
-            bool showHelp = false;
-            bool showVersion = false;
-            bool showLicense = false;
-            bool showCredits = false;
-            string envFile = string.Empty;
-
-            var options = new OptionSet
-            {
-                {
-                    "h|help",
-                    "Shows thie mesage and exits.",
-                    v => showHelp = ( v is not null )
-                },
-                {
-                    "version",
-                    "Shows the version and exits.",
-                    v => showVersion = ( v is not null )
-                },
-                {
-                    "print_license",
-                    "Prints the software license and exits.",
-                    v => showLicense = ( v is not null )
-                },
-                {
-                    "print_credits",
-                    "Prints the third-party notices and credits.",
-                    v => showCredits = ( v is not null )
-                },
-                {
-                    "env=",
-                    "The .env file that contains the environment variable settings.",
-                    v => envFile = v
-                }
-            };
-
-            try
-            {
-                options.Parse( args );
-
-                if( showHelp )
-                {
-                    PrintHelp( options );
-                    return 0;
-                }
-                else if( showVersion )
-                {
-                    PrintVersion();
-                    return 0;
-                }
-                else if( showLicense )
-                {
-                    PrintLicense();
-                    return 0;
-                }
-                else if( showCredits )
-                {
-                    PrintCredits();
-                    return 0;
-                }
-
-                options.Parse( args );
-
-                if( string.IsNullOrWhiteSpace( envFile ) == false )
-                {
-                    Console.WriteLine( $"Using .env file located at '{envFile}'" );
-                    DotEnv.Load( new DotEnvOptions( envFilePaths: new string[] { envFile } ) );
-                }
-
-                Run( args );
-                return 0;
-            }
-            catch( Exception e )
-            {
-                if( log is null )
-                {
-                    Console.Error.WriteLine( "FATAL ERROR:" );
-                    Console.Error.WriteLine( e.ToString() );
-                }
-                else
-                {
-                    log.Fatal( "FATAL ERROR:" + Environment.NewLine + e );
-                }
-                return -1;
-            }
-            finally
-            {
-                log?.Information( "Application Exiting" );
-            }
-        }
-
-        private static void Run( string[] args )
-        {
-            ActivityPubInboxConfig config = ActivityPubInboxConfigExtensions.FromEnvVar();
-            log = CreateLog( config, OnTelegramFailure );
-
-            using( var api = new ActivityPubInboxApi( config, log ) )
-            {
-                WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
-                builder.Services.AddSingleton<ActivityPubInboxApi>( api );
-
-                // Add services to the container.
-                builder.Services.AddControllersWithViews();
-                builder.Host.UseSerilog( log );
-
-                WebApplication app = builder.Build();
-                if( string.IsNullOrWhiteSpace( config.BasePath ) == false )
-                {
-                    app.Use(
-                        ( HttpContext context, RequestDelegate next ) =>
-                        {
-                            context.Request.PathBase = config.BasePath;
-                            return next( context );
-                        }
-                    );
-                }
-
-                app.UseForwardedHeaders(
-                    new ForwardedHeadersOptions
-                    {
-                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-                    }
-                );
-
-                if( config.AllowPorts == false )
-                {
-                    app.Use(
-                        ( HttpContext context, RequestDelegate next ) =>
-                        {
-                            int? port = context.Request.Host.Port;
-                            if( port is not null )
-                            {
-                                // Kill the connection,
-                                // and stop all processing.
-                                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                                context.Connection.RequestClose();
-                                return Task.CompletedTask;
-                            }
-
-                            return next( context );
-                        }
-                    );
-                }
-
-                app.UseHostFiltering();
-
-                // Configure the HTTP request pipeline.
-                if( !app.Environment.IsDevelopment() )
-                {
-                    app.UseExceptionHandler( "/Home/Error" );
-                }
-
-                app.UseStaticFiles();
-                app.UseRouting();
-                app.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}" );
-
-                app.Run();
-            }
-        }
-
-        public static Serilog.ILogger CreateLog(
-            ActivityPubInboxConfig config,
-            Action<Exception> onTelegramFailure
-        )
-        {
-            var logger = new LoggerConfiguration()
-                .WriteTo.Console( Serilog.Events.LogEventLevel.Information );
-
-            bool useFileLogger = false;
-            bool useTelegramLogger = false;
-
-            FileInfo? logFile = config.LogFile;
-            if( logFile is not null )
-            {
-                useFileLogger = true;
-                logger.WriteTo.File(
-                    logFile.FullName,
-                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
-                    retainedFileCountLimit: 10,
-                    fileSizeLimitBytes: 512 * 1000 * 1000, // 512 MB
-                    shared: false
-                );
-            }
-
-            string? telegramBotToken = config.TelegramBotToken;
-            string? telegramChatId = config.TelegramChatId;
-            if(
-                ( string.IsNullOrWhiteSpace( telegramBotToken ) == false ) &&
-                ( string.IsNullOrWhiteSpace( telegramChatId ) == false )
-            )
-            {
-                useTelegramLogger = true;
-                var telegramOptions = new TelegramSinkOptions(
-                    botToken: telegramBotToken,
-                    chatId: telegramChatId,
-                    dateFormat: "dd.MM.yyyy HH:mm:sszzz",
-                    applicationName: $"{typeof( Program ).Assembly.GetName().Name} {GetVersion()}",
-                    failureCallback: onTelegramFailure
-                );
-                logger.WriteTo.Telegram(
-                    telegramOptions,
-                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning
-                );
-            }
-
-            Serilog.ILogger log = logger.CreateLogger();
-            log.Information( $"Using File Logging: {useFileLogger}." );
-            log.Information( $"Using Telegram Logging: {useTelegramLogger}." );
-
-            return log;
-        }
-
-        private static void OnTelegramFailure( Exception e )
-        {
-            log?.Warning( $"Telegram message did not send:{Environment.NewLine}{e}" );
-        }
-
-        private static void PrintHelp( OptionSet options )
-        {
-            options.WriteOptionDescriptions( Console.Out );
-        }
-
-        private static void PrintVersion()
-        {
-            Console.WriteLine( GetVersion() );
-        }
-
-        private static void PrintLicense()
-        {
-            var resources = new Resources();
-            Console.WriteLine( resources.GetLicense() );
-        }
-
-        private static void PrintCredits()
-        {
-            var resources = new Resources();
-            Console.WriteLine( resources.GetCredits() );
+            var builder = new InboxBuilder( args );
+            return builder.Run();
         }
 
         private static string GetVersion()
         {
             return typeof( Program ).Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
+        }
+
+        private class InboxBuilder : ActivityPubWebBuilder, IDisposable
+        {
+            // ---------------- Fields ----------------
+
+            private ActivityPubInboxApi? api;
+
+            // ---------------- Constructor ----------------
+
+            public InboxBuilder( string[] args ) :
+                base( args )
+            {
+                // Don't construct the API here, just in case they just
+                // want to print the version, we don't want something
+                // to not validate.
+            }
+
+            // ---------------- Properties ----------------
+
+            public override TextWriter HelpWriter => Console.Out;
+
+            public override string ApplicationName =>
+                $"{GetType().Assembly.GetName().Name} v{GetVersion()}";
+
+            // ---------------- Functions ----------------
+
+            protected override void ConfigureBuilder( WebApplicationBuilder builder )
+            {
+                if( this.Log is null )
+                {
+                    throw new InvalidOperationException(
+                        "Log was null, someting went out-of-order when setting up"
+                    );
+                }
+
+                ActivityPubInboxConfig config = ActivityPubInboxConfigExtensions.FromEnvVar();
+                this.api = new ActivityPubInboxApi( config, this.Log );
+                builder.Services.AddSingleton( this.api );
+                base.ConfigureBuilder( builder );
+            }
+
+            protected override void PrintCredits()
+            {
+                var resources = new Resources();
+                Console.WriteLine( resources.GetCredits() );
+            }
+
+            protected override void PrintLicense()
+            {
+                var resources = new Resources();
+                Console.WriteLine( resources.GetLicense() );
+            }
+
+            protected override void PrintVersion()
+            {
+                Console.WriteLine( GetVersion() );
+            }
+
+            public void Dispose()
+            {
+                this.api?.Dispose();
+            }
         }
     }
 }

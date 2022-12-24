@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivityPub.Inbox.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KristofferStrube.ActivityStreams", "..\ActivityStreams\src\KristofferStrube.ActivityStreams\KristofferStrube.ActivityStreams.csproj", "{B116963D-ECB3-445A-AA97-E0B287C4D965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityPub.Inbox.Tests", "ActivityPub.Inbox.Tests\ActivityPub.Inbox.Tests.csproj", "{EE895F7F-FB2B-427E-949B-91521296C1C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivityPub.Inbox.Tests", "ActivityPub.Inbox.Tests\ActivityPub.Inbox.Tests.csproj", "{EE895F7F-FB2B-427E-949B-91521296C1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityPub.WebBuilder", "ActivityPub.WebBuilder\ActivityPub.WebBuilder.csproj", "{6C04E7B5-7AD1-4A89-B70C-48287FED9767}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{EE895F7F-FB2B-427E-949B-91521296C1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE895F7F-FB2B-427E-949B-91521296C1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE895F7F-FB2B-427E-949B-91521296C1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C04E7B5-7AD1-4A89-B70C-48287FED9767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C04E7B5-7AD1-4A89-B70C-48287FED9767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C04E7B5-7AD1-4A89-B70C-48287FED9767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C04E7B5-7AD1-4A89-B70C-48287FED9767}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

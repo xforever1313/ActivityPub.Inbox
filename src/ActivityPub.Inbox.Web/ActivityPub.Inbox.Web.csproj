@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
     <ProjectReference Include="..\ActivityPub.Inbox.Common\ActivityPub.Inbox.Common.csproj" />
+    <ProjectReference Include="..\ActivityPub.WebBuilder\ActivityPub.WebBuilder.csproj" />
   </ItemGroup>
 
   <ItemGroup>
