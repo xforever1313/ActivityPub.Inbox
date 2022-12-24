@@ -13,15 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotenv.net" />
 	<PackageReference Include="Markdig" />
-    <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" />
-    <PackageReference Include="Mono.Options" />
-    <PackageReference Include="Serilog" />
-    <PackageReference Include="Serilog.AspNetCore" />
-    <PackageReference Include="Serilog.Sinks.Console" />
-    <PackageReference Include="Serilog.Sinks.File" />
-    <PackageReference Include="Serilog.Sinks.Telegram.Alternative" />
+	<PackageReference Include="Serilog" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Include="..\..\Credits.md" Link="Credits.md">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+	<EmbeddedResource Include="..\..\License.md" Link="License.md">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</EmbeddedResource>
   </ItemGroup>
 
 </Project>

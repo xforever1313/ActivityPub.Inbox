@@ -24,13 +24,16 @@ namespace ActivityPub.Inbox.Web.Models
     {
         // ---------------- Constructor ----------------
 
-        public HomeModel( ActivityPubInboxApi api )
+        public HomeModel( ActivityPubInboxApi api, Resources resources )
         {
             this.Api = api;
+            this.Resources = resources;
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
         }
 
         // ---------------- Properties ----------------
+
+        public Resources Resources { get; private set; }
 
         public ActivityPubInboxApi Api { get; private set; }
 

@@ -40,6 +40,8 @@ namespace ActivityPub.Inbox.Web
         {
             // ---------------- Fields ----------------
 
+            private readonly Resources resources;
+
             private ActivityPubInboxApi? api;
 
             // ---------------- Constructor ----------------
@@ -47,6 +49,7 @@ namespace ActivityPub.Inbox.Web
             public InboxBuilder( string[] args ) :
                 base( args )
             {
+                this.resources = new Resources();
                 // Don't construct the API here, just in case they just
                 // want to print the version, we don't want something
                 // to not validate.
@@ -73,19 +76,19 @@ namespace ActivityPub.Inbox.Web
                 ActivityPubInboxConfig config = ActivityPubInboxConfigExtensions.FromEnvVar();
                 this.api = new ActivityPubInboxApi( config, this.Log );
                 builder.Services.AddSingleton( this.api );
+                builder.Services.AddSingleton( this.resources );
                 base.ConfigureBuilder( builder );
             }
 
             protected override void PrintCredits()
             {
-                var resources = new Resources();
-                Console.WriteLine( resources.GetCredits() );
+                Console.WriteLine( this.resources.GetCredits() );
             }
 
             protected override void PrintLicense()
             {
                 var resources = new Resources();
-                Console.WriteLine( resources.GetLicense() );
+                Console.WriteLine( this.resources.GetLicense() );
             }
 
             protected override void PrintVersion()

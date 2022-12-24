@@ -18,7 +18,7 @@
 
 using SethCS.IO;
 
-namespace ActivityPub.Inbox.Common
+namespace ActivityPub.Inbox.Web
 {
     public sealed class Resources
     {
@@ -33,14 +33,14 @@ namespace ActivityPub.Inbox.Common
         public string GetLicense()
         {
             return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Common )}.License.md"
+                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Web )}.License.md"
             );
         }
 
         public string GetCredits()
         {
             return AssemblyResourceReader.ReadStringResource(
-                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Common )}.Credits.md"
+                typeof( Resources ).Assembly, $"{nameof( ActivityPub )}.{nameof( Inbox )}.{nameof( Web )}.Credits.md"
             );
         }
     }

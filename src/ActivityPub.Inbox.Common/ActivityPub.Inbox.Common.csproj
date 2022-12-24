@@ -16,13 +16,4 @@
     <ProjectReference Include="..\..\SethCS\LibSethCS\LibSethCS.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\Credits.md" Link="Credits.md">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</EmbeddedResource>
-	<EmbeddedResource Include="..\..\License.md" Link="License.md">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</EmbeddedResource>
-  </ItemGroup>
-
 </Project>

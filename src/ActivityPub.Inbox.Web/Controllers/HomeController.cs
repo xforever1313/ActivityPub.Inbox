@@ -29,31 +29,38 @@ namespace ActivityPub.Inbox.Web.Controllers
 
         private readonly ActivityPubInboxApi api;
 
+        private readonly Resources resources;
+
         private readonly Serilog.ILogger log;
 
         // ---------------- Constructor ----------------
 
-        public HomeController( ActivityPubInboxApi api, Serilog.ILogger log )
+        public HomeController(
+            ActivityPubInboxApi api,
+            Resources resources,
+            Serilog.ILogger log
+        )
         {
             this.api = api;
             this.log = log;
+            this.resources = resources;
         }
 
         // ---------------- Functions ----------------
 
         public IActionResult Index()
         {
-            return View( new HomeModel( this.api ) );
+            return View( new HomeModel( this.api, this.resources ) );
         }
 
         public IActionResult License()
         {
-            return View( new HomeModel( this.api ) );
+            return View( new HomeModel( this.api, this.resources ) );
         }
 
         public IActionResult Credits()
         {
-            return View( new HomeModel( this.api ) );
+            return View( new HomeModel( this.api, this.resources ) );
         }
 
         [ResponseCache(
