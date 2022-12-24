@@ -34,25 +34,16 @@ namespace ActivityPub.WebBuilder
 
         private readonly string[] args;
 
+        private ActivityPubWebConfig? webConfig;
+
         // ---------------- Constructor ----------------
 
-        public ActivityPubWebBuilder( string[] args ) :
-            this( args, ActivityPubWebConfigExtensions.FromEnvVar() )
+        public ActivityPubWebBuilder( string[] args )
         {
-        }
-
-        public ActivityPubWebBuilder(
-            string[] args,
-            ActivityPubWebConfig webConfig
-        )
-        {
-            this.WebConfig = webConfig;
             this.args = args;
         }
 
         // ---------------- Properties ----------------
-
-        public ActivityPubWebConfig WebConfig { get; private set; }
 
         /// <summary>
         /// This is null until <see cref="Run"/> is called.
@@ -170,6 +161,7 @@ namespace ActivityPub.WebBuilder
 
         private void RunInternal()
         {
+            this.webConfig = ActivityPubWebConfigExtensions.FromEnvVar();
             this.Log = CreateLog();
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder( args );
@@ -180,12 +172,12 @@ namespace ActivityPub.WebBuilder
             builder.Host.UseSerilog( this.Log );
 
             WebApplication app = builder.Build();
-            if( string.IsNullOrWhiteSpace( this.WebConfig.BasePath ) == false )
+            if( string.IsNullOrWhiteSpace( this.webConfig.BasePath ) == false )
             {
                 app.Use(
                     ( HttpContext context, RequestDelegate next ) =>
                     {
-                        context.Request.PathBase = this.WebConfig.BasePath;
+                        context.Request.PathBase = this.webConfig.BasePath;
                         return next( context );
                     }
                 );
@@ -198,7 +190,7 @@ namespace ActivityPub.WebBuilder
                 }
             );
 
-            if( this.WebConfig.AllowPorts == false )
+            if( this.webConfig.AllowPorts == false )
             {
                 app.Use(
                     ( HttpContext context, RequestDelegate next ) =>
@@ -243,7 +235,7 @@ namespace ActivityPub.WebBuilder
             bool useFileLogger = false;
             bool useTelegramLogger = false;
 
-            FileInfo? logFile = this.WebConfig.LogFile;
+            FileInfo? logFile = this.webConfig.LogFile;
             if( logFile is not null )
             {
                 useFileLogger = true;
@@ -256,8 +248,8 @@ namespace ActivityPub.WebBuilder
                 );
             }
 
-            string? telegramBotToken = this.WebConfig.TelegramBotToken;
-            string? telegramChatId = this.WebConfig.TelegramChatId;
+            string? telegramBotToken = this.webConfig.TelegramBotToken;
+            string? telegramChatId = this.webConfig.TelegramChatId;
             if(
                 ( string.IsNullOrWhiteSpace( telegramBotToken ) == false ) &&
                 ( string.IsNullOrWhiteSpace( telegramChatId ) == false )
