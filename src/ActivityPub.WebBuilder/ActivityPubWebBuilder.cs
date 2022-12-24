@@ -226,7 +226,6 @@ namespace ActivityPub.WebBuilder
                 app.UseExceptionHandler( "/Home/Error" );
             }
 
-            app.UseStaticFiles();
             app.UseRouting();
             app.MapControllerRoute(
                 name: "default",
