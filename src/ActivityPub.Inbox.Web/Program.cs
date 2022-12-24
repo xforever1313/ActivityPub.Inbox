@@ -87,7 +87,6 @@ namespace ActivityPub.Inbox.Web
 
             protected override void PrintLicense()
             {
-                var resources = new Resources();
                 Console.WriteLine( this.resources.GetLicense() );
             }
 

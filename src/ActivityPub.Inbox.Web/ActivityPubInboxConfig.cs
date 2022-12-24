@@ -26,23 +26,7 @@ namespace ActivityPub.Inbox.Web
     {
         // ---------------- Properties ----------------
 
-        public string BasePath { get; init; } = "";
-
-        /// <summary>
-        /// If the given request has a port in
-        /// the URL, should we process it?
-        /// 
-        /// If false, then each request will 400.
-        /// </summary>
-        public bool AllowPorts { get; init; } = true;
-
         public IEnumerable<ActivityPubSiteConfig> Sites { get; init; } = Array.Empty<ActivityPubSiteConfig>();
-
-        public FileInfo? LogFile { get; init; } = null;
-
-        public string? TelegramBotToken { get; init; } = null;
-
-        public string? TelegramChatId { get; init; } = null;
 
         // ---------------- Functions ----------------
 
@@ -79,22 +63,6 @@ namespace ActivityPub.Inbox.Web
 
             var settings = new ActivityPubInboxConfig();
 
-            if( NotNull( "APP_BASEPATH", out string basePath ) )
-            {
-                settings = settings with
-                {
-                    BasePath = basePath
-                };
-            }
-
-            if( NotNull( "APP_ALLOW_PORTS", out string allowPorts ) )
-            {
-                settings = settings with
-                {
-                    AllowPorts = bool.Parse( allowPorts )
-                };
-            }
-
             if( NotNull( "APP_SITE_CONFIG_FILE", out string siteConfigFile ) )
             {
                 XDocument doc = XDocument.Load( siteConfigFile );
@@ -102,21 +70,6 @@ namespace ActivityPub.Inbox.Web
                 { 
                     Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc )
                 };
-            }
-
-            if( NotNull( "APP_LOG_FILE", out string logFile ) )
-            {
-                settings = settings with { LogFile = new FileInfo( logFile ) };
-            }
-
-            if( NotNull( "APP_TELEGRAM_BOT_TOKEN", out string tgBotToken ) )
-            {
-                settings = settings with { TelegramBotToken = tgBotToken };
-            }
-
-            if( NotNull( "APP_TELEGRAM_CHAT_ID", out string tgChatId ) )
-            {
-                settings = settings with { TelegramChatId = tgChatId };
             }
 
             return settings;
