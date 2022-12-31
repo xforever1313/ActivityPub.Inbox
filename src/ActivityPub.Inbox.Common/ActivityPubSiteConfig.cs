@@ -92,7 +92,7 @@ namespace ActivityPub.Inbox.Common
     {
         // ---------------- Fields ----------------
 
-        private const string SiteConfigElementName = "Site";
+        public static readonly string SiteConfigElementName = "Site";
 
         // ---------------- Functions ----------------
 
