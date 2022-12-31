@@ -34,17 +34,15 @@ namespace ActivityPub.Inbox.Tests
             const string xmlString =
 @"
 <Sites>
-    <Site id=""https://www.roclongboarding.info"">
+    <Site id=""roclongboarding"">
         <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
         <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
         <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
-        <EndPoint>roclongboarding</EndPoint>
     </Site>
-    <Site id=""https://troop53stories.shendrick.net/"">
+    <Site id=""troop53stories"">
         <PrivateKeyFile>troop53stories/private.pem</PrivateKeyFile>
         <PublicKeyFile>troop53stories/public.pem</PublicKeyFile>
         <ProfileUrl>https://troop53stories.shendrick.net/activitypub/profile.json</ProfileUrl>
-        <EndPoint>troop53stories</EndPoint>
     </Site>
 </Sites>
 ";
@@ -52,14 +50,14 @@ namespace ActivityPub.Inbox.Tests
                 PrivateKeyFile: new FileInfo( "roclongboarding/private.pem" ),
                 PublicKeyFile: new FileInfo( "roclongboarding/public.pem" ),
                 ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
-                EndPoint: "roclongboarding"
+                Id: "roclongboarding"
             );
 
             var expected1 = new ActivityPubSiteConfig(
                 PrivateKeyFile: new FileInfo( "troop53stories/private.pem" ),
                 PublicKeyFile: new FileInfo( "troop53stories/public.pem" ),
                 ProfileUrl: new Uri( "https://troop53stories.shendrick.net/activitypub/profile.json" ),
-                EndPoint: "troop53stories"
+                Id: "troop53stories"
             );
 
             // Act
@@ -81,10 +79,9 @@ namespace ActivityPub.Inbox.Tests
             const string xmlString =
 @"
 <Sites>
-    <Site id=""https://www.roclongboarding.info"">
+    <Site id=""roclongboarding"">
         <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
         <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
-        <EndPoint>roclongboarding</EndPoint>
     </Site>
 </Sites>
 ";
@@ -106,10 +103,9 @@ namespace ActivityPub.Inbox.Tests
             const string xmlString =
 @"
 <Sites>
-    <Site id=""https://www.roclongboarding.info"">
+    <Site id=""roclongboarding"">
         <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
         <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
-        <EndPoint>roclongboarding</EndPoint>
     </Site>
 </Sites>
 ";
@@ -131,10 +127,9 @@ namespace ActivityPub.Inbox.Tests
             const string xmlString =
 @"
 <Sites>
-    <Site id=""https://www.roclongboarding.info"">
+    <Site id=""roclongboarding"">
         <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
         <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
-        <EndPoint>roclongboarding</EndPoint>
     </Site>
 </Sites>
 ";
@@ -150,13 +145,13 @@ namespace ActivityPub.Inbox.Tests
         }
 
         [TestMethod]
-        public void XmlMissingEndPoint()
+        public void XmlMissingId()
         {
             // Setup
             const string xmlString =
 @"
 <Sites>
-    <Site id=""https://www.roclongboarding.info"">
+    <Site>
         <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
         <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
         <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
@@ -183,7 +178,7 @@ namespace ActivityPub.Inbox.Tests
                 // Pretend our assembly is our public key so this part passes.
                 PublicKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
-                EndPoint: "roclongboarding"
+                Id: "roclongboarding"
             );
 
             // Act
@@ -204,7 +199,7 @@ namespace ActivityPub.Inbox.Tests
                 PrivateKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 PublicKeyFile: new FileInfo( "DoesNotExist.pem" ),
                 ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
-                EndPoint: "roclongboarding"
+                Id: "roclongboarding"
             );
 
             // Act
@@ -225,7 +220,7 @@ namespace ActivityPub.Inbox.Tests
                 PrivateKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 PublicKeyFile: new FileInfo( this.GetType().Assembly.Location ),
                 ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
-                EndPoint: ""
+                Id: ""
             );
 
             // Act

@@ -23,10 +23,10 @@ using SethCS.Extensions;
 namespace ActivityPub.Inbox.Common
 {
     public record class ActivityPubSiteConfig(
+        string Id,
         FileInfo PrivateKeyFile,
         FileInfo PublicKeyFile,
-        Uri ProfileUrl,
-        string EndPoint
+        Uri ProfileUrl
     )
     {
         public virtual bool Equals( ActivityPubSiteConfig? other )
@@ -40,7 +40,7 @@ namespace ActivityPub.Inbox.Common
                 this.PrivateKeyFile.FullName.Equals( other.PrivateKeyFile.FullName ) &&
                 this.PublicKeyFile.FullName.Equals( other.PublicKeyFile.FullName ) &&
                 this.ProfileUrl.Equals( other.ProfileUrl ) &&
-                this.EndPoint.Equals( other.EndPoint );
+                this.Id.Equals( other.Id );
         }
 
         public override int GetHashCode()
@@ -49,7 +49,7 @@ namespace ActivityPub.Inbox.Common
                 this.PrivateKeyFile.FullName.GetHashCode() +
                 this.PublicKeyFile.FullName.GetHashCode() +
                 this.ProfileUrl.GetHashCode() +
-                this.EndPoint.GetHashCode();
+                this.Id.GetHashCode();
         }
 
         public IEnumerable<string> TryValidate()
@@ -66,9 +66,9 @@ namespace ActivityPub.Inbox.Common
                 errors.Add( $"{this.PublicKeyFile.FullName} does not exist!" );
             }
 
-            if( string.IsNullOrWhiteSpace( this.EndPoint ) )
+            if( string.IsNullOrWhiteSpace( this.Id ) )
             {
-                errors.Add( $"{this.EndPoint} can not be null, empty, or whitespace!" );
+                errors.Add( $"{this.Id} can not be null, empty, or whitespace!" );
             }
 
             return errors;
@@ -109,7 +109,7 @@ namespace ActivityPub.Inbox.Common
             FileInfo? privateKeyFile = null;
             FileInfo? publicKeyFile = null;
             Uri? profileUrl = null;
-            string? endPoint = null;
+            string? id = null;
 
             foreach( XElement element in siteElement.Elements() )
             {
@@ -130,9 +130,18 @@ namespace ActivityPub.Inbox.Common
                 {
                     profileUrl = new Uri( element.Value );
                 }
-                else if( "EndPoint".EqualsIgnoreCase( name ) )
+            }
+
+            foreach( XAttribute attr in siteElement.Attributes() )
+            {
+                string name = attr.Name.LocalName;
+                if( string.IsNullOrEmpty( name ) )
                 {
-                    endPoint = element.Value;
+                    continue;
+                }
+                else if( "id".EqualsIgnoreCase( name ) )
+                {
+                    id = attr.Value;
                 }
             }
 
@@ -140,7 +149,7 @@ namespace ActivityPub.Inbox.Common
                 ( privateKeyFile is null ) ||
                 ( publicKeyFile is null ) ||
                 ( profileUrl is null ) ||
-                ( endPoint is null )
+                ( id is null )
             )
             {
                 var missing = new List<string>();
@@ -148,7 +157,7 @@ namespace ActivityPub.Inbox.Common
                 if( privateKeyFile is null ) { missing.Add( nameof( privateKeyFile ) ); }
                 if( publicKeyFile is null ) { missing.Add( nameof( publicKeyFile ) ); }
                 if( profileUrl is null ) { missing.Add( nameof( profileUrl ) ); }
-                if( endPoint is null ) { missing.Add( nameof( endPoint ) ); }
+                if( id is null ) { missing.Add( nameof( id ) ); }
 
                 throw new ListedValidationException(
                     "Missing the following from the XML file for a site.",
@@ -157,10 +166,10 @@ namespace ActivityPub.Inbox.Common
             }
 
             return new ActivityPubSiteConfig(
+                id,
                 privateKeyFile,
                 publicKeyFile,
-                profileUrl,
-                endPoint
+                profileUrl
             );
         }
 

@@ -49,7 +49,7 @@ namespace ActivityPub.Inbox.Common
             var siteConfigs = new Dictionary<string, ActivityPubSiteConfig>();
             foreach( ActivityPubSiteConfig siteConfig in config.Sites )
             {
-                siteConfigs.Add( siteConfig.EndPoint, siteConfig );
+                siteConfigs.Add( siteConfig.Id, siteConfig );
             }
             this.SiteConfigs = new ReadOnlyDictionary<string,ActivityPubSiteConfig>(
                 siteConfigs
