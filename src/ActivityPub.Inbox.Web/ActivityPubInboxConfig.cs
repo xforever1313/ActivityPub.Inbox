@@ -66,10 +66,24 @@ namespace ActivityPub.Inbox.Web
             if( NotNull( "APP_SITE_CONFIG_FILE", out string siteConfigFile ) )
             {
                 XDocument doc = XDocument.Load( siteConfigFile );
-                settings = settings with
-                { 
-                    Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc )
-                };
+
+                if( NotNull( "APP_BASE_KEY_DIRECTORY", out string baseKeyDir ) )
+                {
+                    settings = settings with
+                    {
+                        Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs(
+                            doc,
+                            new DirectoryInfo( baseKeyDir )
+                        )
+                    };
+                }
+                else
+                {
+                    settings = settings with
+                    {
+                        Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc, null )
+                    };
+                }
             }
 
             return settings;

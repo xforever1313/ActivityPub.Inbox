@@ -73,6 +73,71 @@ namespace ActivityPub.Inbox.Tests
         }
 
         [TestMethod]
+        public void DeserializeWithBaseDirectoryTest()
+        {
+            // Setup
+            string? location = Path.GetDirectoryName(
+                typeof( ActivityPubSiteConfigTests ).Assembly.Location
+            );
+
+            if( location is null )
+            {
+                throw new InvalidOperationException( "Location is somehow null" );
+            }
+
+            DirectoryInfo baseDir = new DirectoryInfo( location );
+
+            const string xmlString =
+@"
+<Sites>
+    <Site id=""roclongboarding"">
+        <PrivateKeyFile>roclongboarding/private.pem</PrivateKeyFile>
+        <PublicKeyFile>roclongboarding/public.pem</PublicKeyFile>
+        <ProfileUrl>https://www.roclongboarding.info/activitypub/profile.json</ProfileUrl>
+    </Site>
+    <Site id=""troop53stories"">
+        <PrivateKeyFile>troop53stories/private.pem</PrivateKeyFile>
+        <PublicKeyFile>troop53stories/public.pem</PublicKeyFile>
+        <ProfileUrl>https://troop53stories.shendrick.net/activitypub/profile.json</ProfileUrl>
+    </Site>
+</Sites>
+";
+            var expected0 = new ActivityPubSiteConfig(
+                PrivateKeyFile: new FileInfo(
+                    Path.Combine( baseDir.FullName, "roclongboarding/private.pem" )
+                ),
+                PublicKeyFile: new FileInfo(
+                    Path.Combine( baseDir.FullName, "roclongboarding/public.pem" )
+                ),
+                ProfileUrl: new Uri( "https://www.roclongboarding.info/activitypub/profile.json" ),
+                Id: "roclongboarding"
+            );
+
+            var expected1 = new ActivityPubSiteConfig(
+                PrivateKeyFile: new FileInfo(
+                    Path.Combine( baseDir.FullName, "troop53stories/private.pem" )
+                ),
+                PublicKeyFile: new FileInfo(
+                    Path.Combine( baseDir.FullName, "troop53stories/public.pem" )
+                ),
+                ProfileUrl: new Uri( "https://troop53stories.shendrick.net/activitypub/profile.json" ),
+                Id: "troop53stories"
+            );
+
+            // Act
+            XDocument doc = XDocument.Parse( xmlString );
+            List<ActivityPubSiteConfig> configs = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs(
+                doc,
+                baseDir
+            ).ToList();
+
+            // Check
+            Assert.AreEqual( 2, configs.Count );
+            Assert.AreEqual( expected0, configs[0] );
+            Assert.AreEqual( expected1, configs[1] );
+        }
+
+        [TestMethod]
         public void XmlMissingPrivateKey()
         {
             // Setup

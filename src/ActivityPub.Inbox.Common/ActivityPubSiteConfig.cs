@@ -96,7 +96,18 @@ namespace ActivityPub.Inbox.Common
 
         // ---------------- Functions ----------------
 
-        public static ActivityPubSiteConfig DeserializeSiteConfig( XElement siteElement )
+        /// <param name="baseKeyDirectory">
+        /// If this is set, when <see cref="ActivityPubSiteConfig.PrivateKeyFile"/>
+        /// and <see cref="ActivityPubSiteConfig.PublicKeyFile"/> paths are resolve,
+        /// this is the directory in which they are in, and the values in the XML file
+        /// are relative to this directory.
+        /// 
+        /// If null, the path is taken as-is.
+        /// </param>
+        public static ActivityPubSiteConfig DeserializeSiteConfig(
+            XElement siteElement,
+            DirectoryInfo? baseKeyDirectory = null
+        )
         {
             if( SiteConfigElementName.EqualsIgnoreCase( siteElement.Name.LocalName ) == false )
             {
@@ -120,11 +131,29 @@ namespace ActivityPub.Inbox.Common
                 }
                 else if( "PrivateKeyFile".EqualsIgnoreCase( name ) )
                 {
-                    privateKeyFile = new FileInfo( element.Value );
+                    if( baseKeyDirectory is null )
+                    {
+                        privateKeyFile = new FileInfo( element.Value );
+                    }
+                    else
+                    {
+                        privateKeyFile = new FileInfo(
+                            Path.Combine( baseKeyDirectory.FullName, element.Value )
+                        );
+                    }
                 }
                 else if( "PublicKeyFile".EqualsIgnoreCase( name ) )
                 {
-                    publicKeyFile = new FileInfo( element.Value );
+                    if( baseKeyDirectory is null )
+                    {
+                        publicKeyFile = new FileInfo( element.Value );
+                    }
+                    else
+                    {
+                        publicKeyFile = new FileInfo(
+                            Path.Combine( baseKeyDirectory.FullName, element.Value )
+                        );
+                    }
                 }
                 else if( "ProfileUrl".EqualsIgnoreCase( name ) )
                 {
@@ -173,7 +202,18 @@ namespace ActivityPub.Inbox.Common
             );
         }
 
-        public static IEnumerable<ActivityPubSiteConfig> DeserializeSiteConfigs( XDocument doc )
+        /// <param name="baseKeyDirectory">
+        /// If this is set, when <see cref="ActivityPubSiteConfig.PrivateKeyFile"/>
+        /// and <see cref="ActivityPubSiteConfig.PublicKeyFile"/> paths are resolve,
+        /// this is the directory in which they are in, and the values in the XML file
+        /// are relative to this directory.
+        /// 
+        /// If null, the path is taken as-is.
+        /// </param>
+        public static IEnumerable<ActivityPubSiteConfig> DeserializeSiteConfigs(
+            XDocument doc,
+            DirectoryInfo? baseKeyDirectory = null
+        )
         {
             XElement? root = doc.Root;
             if( root is null )
@@ -188,9 +228,9 @@ namespace ActivityPub.Inbox.Common
 
             foreach( XElement element in root.Elements() )
             {
-                if( SiteConfigElementName.EqualsIgnoreCase( element.Name.LocalName))
+                if( SiteConfigElementName.EqualsIgnoreCase( element.Name.LocalName ) )
                 {
-                    configs.Add( DeserializeSiteConfig( element ) );
+                    configs.Add( DeserializeSiteConfig( element, baseKeyDirectory ) );
                 }
             }
 
