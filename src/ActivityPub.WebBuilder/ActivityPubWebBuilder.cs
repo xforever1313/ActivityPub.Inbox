@@ -183,6 +183,19 @@ namespace ActivityPub.WebBuilder
                 );
             }
 
+            if( this.webConfig.RewriteDoubleSlashes )
+            {
+                app.Use( ( context, next ) =>
+                {
+                    string? value = context.Request.Path.Value;
+                    if( ( value is not null ) && value.StartsWith( "//" ) )
+                    {
+                        context.Request.Path = new PathString( value.Replace( "//", "/" ) );
+                    }
+                    return next();
+                } );
+            }
+
             app.UseForwardedHeaders(
                 new ForwardedHeadersOptions
                 {

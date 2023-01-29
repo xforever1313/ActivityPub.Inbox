@@ -37,6 +37,12 @@ namespace ActivityPub.WebBuilder
         public bool AllowPorts { get; init; } = true;
 
         /// <summary>
+        /// If the requested URL that contains "//" this will
+        /// set it to "/" instead if true.
+        /// </summary>
+        public bool RewriteDoubleSlashes { get; init; } = false;
+
+        /// <summary>
         /// Where to log information or greater messages to.
         /// Leave null for no logging to files.
         /// </summary>
@@ -74,6 +80,14 @@ namespace ActivityPub.WebBuilder
                 settings = settings with
                 {
                     AllowPorts = bool.Parse( allowPorts )
+                };
+            }
+
+            if( NotNull( "APP_STRIP_DOUBLE_SLASH", out string stripDoubleSlash ) )
+            {
+                settings = settings with
+                {
+                    RewriteDoubleSlashes = bool.Parse( stripDoubleSlash )
                 };
             }
 
