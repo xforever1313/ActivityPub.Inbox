@@ -38,11 +38,41 @@ namespace ActivityPub.Inbox.Common.DatabaseSchema
 
         public FileInfo DatabaseLocation { get; private set; }
 
+        public DbSet<Site>? Sites { get; set; }
+
+        public DbSet<Follower>? Followers { get; set; }
+
         // ---------------- Functions ----------------
 
         public void EnsureCreated()
         {
             this.Database.EnsureCreated();
+        }
+
+        public DbSet<Site> SafeGetSitesTable()
+        {
+            DbSet<Site>? sitesTable = this.Sites;
+            if( sitesTable is null )
+            {
+                throw new InvalidOperationException(
+                    $"{nameof( Sites )} table somehow null!"
+                );
+            }
+
+            return sitesTable;
+        }
+
+        public DbSet<Follower> SafeGetFollowerTable()
+        {
+            DbSet<Follower>? followerTable = this.Followers;
+            if( followerTable is null )
+            {
+                throw new InvalidOperationException(
+                    $"{nameof( Followers )} table somehow null!"
+                );
+            }
+
+            return followerTable;
         }
 
         protected override void OnConfiguring( DbContextOptionsBuilder optionsBuilder )

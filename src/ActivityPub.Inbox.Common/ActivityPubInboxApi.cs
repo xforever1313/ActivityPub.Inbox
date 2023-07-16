@@ -94,6 +94,7 @@ namespace ActivityPub.Inbox.Common
         public void Init()
         {
             this.Database.EnsureCreated();
+            this.Database.AddSites( this.SiteConfigs.Values );
         }
 
         public void Dispose()
