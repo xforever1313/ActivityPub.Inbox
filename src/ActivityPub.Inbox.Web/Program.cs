@@ -75,6 +75,7 @@ namespace ActivityPub.Inbox.Web
 
                 ActivityPubInboxConfig config = ActivityPubInboxConfigExtensions.FromEnvVar();
                 this.api = new ActivityPubInboxApi( config, this.Log );
+                this.api.Init();
                 builder.Services.AddSingleton( this.api );
                 builder.Services.AddSingleton( this.resources );
                 base.ConfigureBuilder( builder );

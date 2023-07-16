@@ -24,6 +24,12 @@ namespace ActivityPub.Inbox.Common
 
         IEnumerable<ActivityPubSiteConfig> Sites { get; }
 
+        /// <summary>
+        /// Location where the database that contains
+        /// the followers, likes, etc is located.
+        /// </summary>
+        FileInfo SqliteDatabaseLocation { get; }
+
         // ---------------- Functions ----------------
 
         /// <summary>

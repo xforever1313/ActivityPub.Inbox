@@ -28,6 +28,9 @@ namespace ActivityPub.Inbox.Web
 
         public IEnumerable<ActivityPubSiteConfig> Sites { get; init; } = Array.Empty<ActivityPubSiteConfig>();
 
+        public FileInfo SqliteDatabaseLocation { get; init; } = 
+            new FileInfo( Path.Combine( typeof( Program ).Assembly.Location, "actpub.db" ) );
+
         // ---------------- Functions ----------------
 
         public void Validate()
@@ -84,6 +87,14 @@ namespace ActivityPub.Inbox.Web
                         Sites = ActivityPubSiteConfigExtensions.DeserializeSiteConfigs( doc, null )
                     };
                 }
+            }
+
+            if( NotNull( "APP_SQLITE_DATABASE_FILE", out string sqliteDatabase ) )
+            {
+                settings = settings with
+                {
+                    SqliteDatabaseLocation = new FileInfo( sqliteDatabase )
+                };
             }
 
             return settings;
