@@ -18,6 +18,7 @@
 
 using KristofferStrube.ActivityStreams;
 using Serilog;
+using SethCS.Extensions;
 
 namespace ActivityPub.Inbox.Common
 {
@@ -38,7 +39,43 @@ namespace ActivityPub.Inbox.Common
 
         public void HandleNewActivity( string siteId, Activity json )
         {
-            throw new NotImplementedException();
+            string? type = json.Type?.FirstOrDefault();
+
+            if( string.IsNullOrWhiteSpace( type ) )
+            {
+                throw new InvalidUserOperationException(
+                    "Missing 'type' field in Activity request"
+                );
+            }
+            else if( type.EqualsIgnoreCase( "follow" ) )
+            {
+                // https://www.w3.org/ns/activitystreams#Follow
+                this.log.Verbose( $"Received Follow request for site: {siteId}." );
+            }
+            else if( type.EqualsIgnoreCase( "like" ) )
+            {
+                // https://www.w3.org/ns/activitystreams#Like
+                this.log.Verbose( $"Received Like request for site: {siteId}." );
+            }
+            else if( type.EqualsIgnoreCase( "announce" ) )
+            {
+                // https://www.w3.org/ns/activitystreams#Announce
+                this.log.Verbose( $"Received Announce request for site: {siteId}." );
+            }
+            else if( type.EqualsIgnoreCase( "dislike" ) )
+            {
+                // https://www.w3.org/ns/activitystreams#Dislike
+                this.log.Verbose( $"Received Dislike request for site: {siteId}." );
+            }
+            else if( type.EqualsIgnoreCase( "undo" ) )
+            {
+                // https://www.w3.org/ns/activitystreams#Undo
+                this.log.Verbose( $"Received Undo request for site: {siteId}." );
+            }
+            else
+            {
+                throw new UnsupportedActivityType( type );
+            }
         }
 
         public Task AsyncHandleNewActivity( string siteId, Activity json )

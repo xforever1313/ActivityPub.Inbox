@@ -66,8 +66,15 @@ namespace ActivityPub.Inbox.Web.Controllers
                     return BadRequest( "Body was null" );
                 }
 
-                await this.api.Inbox.AsyncHandleNewActivity( id, act );
-                return Accepted();
+                try
+                {
+                    await this.api.Inbox.AsyncHandleNewActivity( id, act );
+                    return Accepted();
+                }
+                catch( InvalidUserOperationException e )
+                {
+                    return BadRequest( e.Message );
+                }
             }
             else
             {

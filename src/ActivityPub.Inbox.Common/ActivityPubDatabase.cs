@@ -16,11 +16,6 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ActivityPub.Inbox.Common.DatabaseSchema;
 using Serilog;
 
@@ -54,6 +49,7 @@ namespace ActivityPub.Inbox.Common
 
         public void EnsureCreated()
         {
+            this.log.Information( $"Ensuring database exists at: {this.dbFile.FullName}" );
             using( DatabaseConnection databaseConnection = Connect() )
             {
                 databaseConnection.EnsureCreated();
