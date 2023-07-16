@@ -27,8 +27,6 @@ namespace ActivityPub.Inbox.Common
 
         private readonly ILogger log;
 
-        private readonly ActivityPubDatabase db;
-
         private bool isDisposed;
 
         // ---------------- Constructor ----------------
@@ -45,13 +43,13 @@ namespace ActivityPub.Inbox.Common
             this.Config = config;
             this.log = log;
 
-            this.db = new ActivityPubDatabase(
+            this.Database = new ActivityPubDatabase(
                 this.Config.SqliteDatabaseLocation,
                 this.log
             );
 
-            this.Inbox = new InboxHandler( this.log );
-            this.Followers = new Followers( this.log );
+            this.Inbox = new InboxHandler( this, this.log );
+            this.Followers = new Followers( this, this.log );
             this.Version = GetType().Assembly.GetName().Version?.ToString( 3 ) ?? "Unknown Version";
 
             var siteConfigs = new Dictionary<string, ActivityPubSiteConfig>();
@@ -72,6 +70,8 @@ namespace ActivityPub.Inbox.Common
 
         public InboxHandler Inbox { get; private set; }
 
+        public ActivityPubDatabase Database { get; private set; }
+
         public Followers Followers { get; private set; }
 
         public string Version { get; private set; }
@@ -80,7 +80,7 @@ namespace ActivityPub.Inbox.Common
 
         public void Init()
         {
-            this.db.EnsureCreated();
+            this.Database.EnsureCreated();
         }
 
         public void Dispose()
@@ -90,7 +90,7 @@ namespace ActivityPub.Inbox.Common
                 return;
             }
 
-            this.db.Dispose();
+            this.Database.Dispose();
 
             GC.SuppressFinalize( this );
             this.isDisposed = true;

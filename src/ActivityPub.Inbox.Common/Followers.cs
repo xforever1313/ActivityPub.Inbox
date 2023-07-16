@@ -16,7 +16,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using KristofferStrube.ActivityStreams;
 using Serilog;
+using SethCS.Extensions;
 
 namespace ActivityPub.Inbox.Common
 {
@@ -24,18 +26,21 @@ namespace ActivityPub.Inbox.Common
     {
         // ---------------- Fields ----------------
 
+        private readonly ActivityPubInboxApi api;
+
         private readonly ILogger log;
 
         // ---------------- Constructor ----------------
 
-        public Followers( ILogger log )
+        public Followers( ActivityPubInboxApi api, ILogger log )
         {
+            this.api = api;
             this.log = log;
         }
 
         // ---------------- Functions ----------------
 
-        public void AddFollower( string siteId, string follower )
+        public void AddFollower( string siteId, Activity follower )
         {
         }
 
