@@ -26,13 +26,13 @@ namespace ActivityPub.Inbox.Common
     {
         // ---------------- Fields ----------------
 
-        private readonly ActivityPubInboxApi api;
+        private readonly IActivityPubInboxApi api;
 
         private readonly ILogger log;
 
         // ---------------- Constructor ----------------
 
-        public InboxHandler( ActivityPubInboxApi api, ILogger log )
+        public InboxHandler( IActivityPubInboxApi api, ILogger log )
         {
             this.api = api;
             this.log = log;

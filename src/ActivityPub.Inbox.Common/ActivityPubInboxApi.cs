@@ -21,7 +21,20 @@ using Serilog;
 
 namespace ActivityPub.Inbox.Common
 {
-    public class ActivityPubInboxApi : IDisposable
+    public interface IActivityPubInboxApi
+    {
+        IActivityPubInboxConfig Config { get; }
+
+        IReadOnlyDictionary<string, ActivityPubSiteConfig> SiteConfigs { get; }
+
+        InboxHandler Inbox { get; }
+
+        ActivityPubDatabase Database { get; }
+
+        Followers Followers { get; }
+    }
+
+    public class ActivityPubInboxApi : IActivityPubInboxApi, IDisposable
     {
         // ---------------- Fields ----------------
 
